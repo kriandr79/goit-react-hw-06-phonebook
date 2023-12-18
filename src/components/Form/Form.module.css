@@ -1,0 +1,19 @@
+.formdiv {
+    width: 400px;
+    padding:30px;
+    background-color: beige;
+    border: brown 1px solid;
+}
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+p {
+    margin-top: 4px;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+.btn {
+    width: 170px;
+}
