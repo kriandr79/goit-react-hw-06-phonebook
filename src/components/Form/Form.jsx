@@ -1,14 +1,19 @@
 import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { addContact, getContacts } from '../../redux/contactsSlice';
 import css from './Form.module.css'
 
 
 function Form({onSubmit}) {
-  const [name, setName] = useState()
-  const [number, setNumber] = useState()
+  const [name, setName] = useState();
+  const [number, setNumber] = useState();
+
+  const dispatch = useDispatch();
+  const contactsList = useSelector(getContacts);
 
   const handleInput = e => {
     const { name, value } = e.currentTarget;
-      
+
     switch (name) {
       case 'name':
         setName(value);
@@ -19,12 +24,16 @@ function Form({onSubmit}) {
       default:
         console.log('ERROR');
     }
-   
   };
 
+  // Сабміт форми - додаємо контакт
   const handleFormSubmit = e => {
     e.preventDefault();
-    onSubmit({ name, number });
+    if (contactsList.find(contact => contact.name === name)) {
+      alert(`${name} is already exist in the phonebook!`);
+      return;
+    }
+    dispatch(addContact(name, number));
     reset();
   };
 
@@ -33,8 +42,9 @@ function Form({onSubmit}) {
     setNumber('');
   };
 
-
-    return (
+  return (
+    <>
+      <h2>Phonebook</h2>
       <div className={css.formdiv}>
         <form className={css.form} onSubmit={handleFormSubmit}>
           <label>
@@ -63,7 +73,8 @@ function Form({onSubmit}) {
           </button>
         </form>
       </div>
-    );
-  }
+    </>
+  );
+}
 
 export default Form;
